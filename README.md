@@ -2,7 +2,7 @@
 
 用生活比喻和動畫，帶非工程師（以及想跨出自己領域的工程師）看懂軟體開發的核心概念：會出什麼問題，工程師又怎麼解決。
 
-網站：https://easylive1989.github.io/learning-software-dev/
+網站：https://paul-learning.dev/learning-software-dev/
 
 ## 開發
 
