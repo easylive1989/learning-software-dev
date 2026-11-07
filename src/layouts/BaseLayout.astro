@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+import { url } from '../data/paths';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '用比喻和互動模擬，聽懂軟體工程師在說什麼。' } = Astro.props;
+const fullTitle = title === '聽懂工程師' ? title : `${title}｜聽懂工程師`;
+---
+
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url("/favicon.svg")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href={url("/")} class="brand">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" fill="var(--surface)" stroke="var(--line-base)" stroke-width="4"></circle>
+        </svg>
+        聽懂工程師
+      </a>
+      <a href={url("/#map")} class="header-link">路線圖</a>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <p>這是第一版試作。基礎線先通車，其他路線還在規劃。</p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 1.1rem 16px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 900;
+    font-size: 1.05rem;
+    text-decoration: none;
+  }
+  .header-link {
+    font-size: 0.95rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    color: var(--ink);
+  }
+  .site-footer {
+    max-width: 1120px;
+    margin: 4rem auto 0;
+    padding: 2rem 16px 3rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+</style>

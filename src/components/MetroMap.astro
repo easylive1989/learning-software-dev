@@ -1,0 +1,224 @@
+---
+import { baseLine, plannedLines } from '../data/chapters';
+import { url } from '../data/paths';
+
+const BASE_Y = 210;
+const baseX = (i: number) => 70 + i * 107.5;
+
+// 前端線：從「前端與後端」往上分岔，再往右
+const frontBranch = baseX(2);
+const frontY = 82;
+const frontXs = [430, 580, 730, 880];
+
+// 後端與維運線：從「資料庫」往下分岔，再往左
+const backBranch = baseX(5);
+const backY = 340;
+const backXs = [500, 375, 250, 125];
+
+const [front, back] = plannedLines;
+---
+
+<div class="map-wrap">
+  <svg class="map" viewBox="0 0 1000 420" role="img" aria-labelledby="map-title">
+    <title id="map-title">學習路線圖：基礎線九站，前端線與後端與維運線規劃中</title>
+
+    <!-- planned lines (dashed) -->
+    <path
+      d={`M${frontBranch} ${BASE_Y} L${frontBranch} ${frontY + 40} Q${frontBranch} ${frontY} ${frontBranch + 40} ${frontY} L940 ${frontY}`}
+      class="line planned"
+      style={`stroke:${front.color}`}
+    />
+    <path
+      d={`M${backBranch} ${BASE_Y} L${backBranch} ${backY - 40} Q${backBranch} ${backY} ${backBranch - 40} ${backY} L70 ${backY}`}
+      class="line planned"
+      style={`stroke:${back.color}`}
+    />
+
+    <!-- base line -->
+    <line x1={baseX(0)} y1={BASE_Y} x2={baseX(8)} y2={BASE_Y} class="line" style="stroke:var(--line-base)" />
+
+    {
+      front.stations.map((name, i) => (
+        <g class="station planned-station">
+          <circle cx={frontXs[i]} cy={frontY} r="8" style={`stroke:${front.color}`} />
+          <text x={frontXs[i]} y={frontY - 22} text-anchor="middle">
+            {name}
+          </text>
+        </g>
+      ))
+    }
+    {
+      back.stations.map((name, i) => (
+        <g class="station planned-station">
+          <circle cx={backXs[i]} cy={backY} r="8" style={`stroke:${back.color}`} />
+          <text x={backXs[i]} y={backY + 34} text-anchor="middle">
+            {name}
+          </text>
+        </g>
+      ))
+    }
+
+    {
+      baseLine.map((ch, i) => {
+        const x = baseX(i);
+        const above = i % 2 === 1;
+        const interchange = i === 2 || i === 5;
+        return (
+          <a href={url(`/chapters/${ch.slug}/`)} aria-label={`第 ${ch.no} 站：${ch.title}${ch.ready ? '' : '（施工中）'}`}>
+            <g class:list={['station', { ready: ch.ready, interchange }]}>
+              <circle cx={x} cy={BASE_Y} r={interchange ? 15 : 12} />
+              <text x={x} y={BASE_Y + 4.5} text-anchor="middle" class="num">
+                {ch.no}
+              </text>
+              <text x={x} y={above ? BASE_Y - 30 : BASE_Y + 42} text-anchor="middle" class="label">
+                {ch.station}
+              </text>
+            </g>
+          </a>
+        );
+      })
+    }
+  </svg>
+
+  <!-- 窄螢幕改用直式清單 -->
+  <ol class="map-list">
+    {
+      baseLine.map((ch) => (
+        <li class:list={{ ready: ch.ready }}>
+          <a href={url(`/chapters/${ch.slug}/`)}>
+            <span class="dot">{ch.no}</span>
+            <span class="name">{ch.title}</span>
+            {!ch.ready && <span class="soon">施工中</span>}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</div>
+
+<style>
+  .map {
+    width: 100%;
+    height: auto;
+    display: block;
+    font-family: var(--font-sans);
+  }
+  .line {
+    fill: none;
+    stroke-width: 9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .line.planned {
+    stroke-width: 6;
+    stroke-dasharray: 2 12;
+    opacity: 0.85;
+  }
+  .station circle {
+    fill: var(--surface);
+    stroke: var(--line-base);
+    stroke-width: 4;
+    transition: r 0.15s ease;
+  }
+  .station.ready circle {
+    fill: var(--line-base);
+  }
+  .station .num {
+    font-size: 12px;
+    font-weight: 700;
+    fill: var(--muted);
+    pointer-events: none;
+  }
+  .station.ready .num {
+    fill: var(--surface);
+  }
+  .station .label {
+    font-size: 16px;
+    font-weight: 500;
+    fill: var(--muted);
+  }
+  .station.ready .label {
+    font-weight: 900;
+    fill: var(--ink);
+  }
+  .station.interchange circle {
+    stroke-width: 5;
+  }
+  a:hover .station circle,
+  a:focus-visible .station circle {
+    r: 17;
+  }
+  a:hover .label,
+  a:focus-visible .label {
+    fill: var(--ink);
+    text-decoration: underline;
+  }
+  .planned-station circle {
+    fill: var(--surface);
+    stroke-width: 3;
+  }
+  .planned-station text {
+    font-size: 13px;
+    fill: var(--muted);
+  }
+
+  .map-list {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 4px;
+  }
+  .map-list li a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.55rem 0;
+    text-decoration: none;
+    color: var(--muted);
+  }
+  .map-list li:not(:last-child) a::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    height: 100%;
+    width: 6px;
+    background: var(--line-base);
+  }
+  .map-list .dot {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 4px solid var(--line-base);
+    background: var(--surface);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .map-list li.ready a {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .map-list li.ready .dot {
+    background: var(--line-base);
+    color: var(--surface);
+  }
+  .map-list .soon {
+    font-size: 0.8rem;
+    font-weight: 400;
+  }
+
+  @media (max-width: 720px) {
+    .map {
+      display: none;
+    }
+    .map-list {
+      display: block;
+    }
+  }
+</style>

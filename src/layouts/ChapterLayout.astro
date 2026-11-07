@@ -1,0 +1,256 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { baseLine, getChapter } from '../data/chapters';
+import { url } from '../data/paths';
+
+interface Props {
+  frontmatter?: { slug: string };
+  slug?: string;
+}
+
+const slug = Astro.props.frontmatter?.slug ?? Astro.props.slug!;
+const chapter = getChapter(slug);
+const idx = baseLine.indexOf(chapter);
+const prev = baseLine[idx - 1];
+const next = baseLine[idx + 1];
+---
+
+<BaseLayout title={chapter.title} description={chapter.summary}>
+  <div class="chapter-grid">
+    <nav class="rail" aria-label="基礎線各站">
+      <p class="rail-name">基礎線</p>
+      <ol>
+        {
+          baseLine.map((ch) => (
+            <li class:list={{ current: ch.slug === slug, ready: ch.ready }}>
+              <a href={url(`/chapters/${ch.slug}/`)} aria-current={ch.slug === slug ? 'page' : undefined}>
+                <span class="dot" aria-hidden="true" />
+                <span>{ch.station}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <article class="prose">
+      <header class="chapter-head">
+        <p class="stop">基礎線第 {chapter.no} 站</p>
+        <h1>{chapter.title}</h1>
+        <p class="summary">{chapter.summary}</p>
+      </header>
+
+      <slot />
+
+      <nav class="pager" aria-label="上一站與下一站">
+        {
+          prev ? (
+            <a href={url(`/chapters/${prev.slug}/`)} class="prev">
+              <small>上一站</small>
+              {prev.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next && (
+            <a href={url(`/chapters/${next.slug}/`)} class="next">
+              <small>下一站</small>
+              {next.title}
+            </a>
+          )
+        }
+      </nav>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .chapter-grid {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 3rem;
+  }
+
+  /* 左側路線 */
+  .rail {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+    padding-top: 2.6rem;
+  }
+  .rail-name {
+    margin: 0 0 0.8rem;
+    font-weight: 900;
+    color: var(--line-base);
+    font-size: 0.95rem;
+  }
+  .rail ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rail li a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.3rem 0;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .rail li:not(:last-child) a::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    height: 100%;
+    width: 4px;
+    background: var(--line-base);
+  }
+  .rail .dot {
+    position: relative;
+    z-index: 1;
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid var(--line-base);
+    background: var(--surface);
+  }
+  .rail li.ready .dot {
+    background: var(--line-base);
+  }
+  .rail li.current a {
+    color: var(--ink);
+    font-weight: 900;
+  }
+  .rail li.current .dot {
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 7px var(--ink);
+  }
+  .rail li a:hover {
+    color: var(--ink);
+  }
+
+  /* 內文 */
+  .prose {
+    max-width: var(--measure);
+    padding-top: 2rem;
+  }
+  .chapter-head {
+    margin-bottom: 2.5rem;
+  }
+  .stop {
+    margin: 0;
+    color: var(--line-base);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .chapter-head h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    margin-top: 0.2rem;
+  }
+  .summary {
+    font-size: 1.12rem;
+    color: var(--muted);
+    margin: 0.8rem 0 0;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.55rem;
+    font-weight: 900;
+    margin: 3.2rem 0 0.8rem;
+    padding-top: 1.2rem;
+    border-top: 4px solid var(--ink);
+  }
+  .prose :global(h3) {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 2rem 0 0.4rem;
+  }
+  .prose :global(p),
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0.8rem 0;
+  }
+  .prose :global(li + li) {
+    margin-top: 0.3rem;
+  }
+  .prose :global(strong) {
+    font-weight: 700;
+  }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    margin: 1.2rem 0;
+    display: block;
+    overflow-x: auto;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.55rem 0.7rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .prose :global(th) {
+    border-bottom: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+  .prose :global(blockquote) {
+    margin: 1.2rem 0;
+    padding: 0.2rem 0 0.2rem 1.1rem;
+    border-left: 4px solid var(--line-base);
+    color: var(--muted);
+  }
+
+  /* 互動區塊可以比內文寬一點 */
+  .prose :global(.widget) {
+    margin: 1.6rem 0;
+  }
+
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .pager a {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .pager a small {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .pager a:hover {
+    text-decoration: underline;
+  }
+  .pager .next {
+    text-align: right;
+    margin-left: auto;
+  }
+
+  @media (max-width: 860px) {
+    .chapter-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .rail {
+      display: none;
+    }
+  }
+</style>

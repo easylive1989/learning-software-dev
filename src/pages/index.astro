@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MetroMap from '../components/MetroMap.astro';
+import { plannedLines } from '../data/chapters';
+import { url } from '../data/paths';
+---
+
+<BaseLayout title="聽懂工程師">
+  <main>
+    <section class="hero">
+      <h1>聽懂工程師<br />在說什麼</h1>
+      <p class="lede">
+        「DB 被打爆了」「這支 API 回 500」「快取雪崩」。這裡用生活比喻和動畫，帶你看見軟體裡那些看不見的東西：會出什麼問題，工程師又怎麼解決。不用會寫程式，也不用從頭讀到尾。
+      </p>
+    </section>
+
+    <section id="map" class="map-section" aria-labelledby="map-heading">
+      <h2 id="map-heading" class="visually-hidden">路線圖</h2>
+      <MetroMap />
+      <p class="legend">
+        <span><span class="legend-dot filled"></span>實心站已經可以閱讀</span>
+        <span><span class="legend-dot"></span>空心站還在施工</span>
+        <span class="legend-planned"><span class="legend-dash"></span>虛線是規劃中的路線</span>
+      </p>
+    </section>
+
+    <section class="routes" aria-labelledby="routes-heading">
+      <h2 id="routes-heading">該從哪條線開始</h2>
+      <ul>
+        <li style="--c: var(--line-base)">
+          <h3>基礎線</h3>
+          <p>
+            給不是工程師、但每天要跟工程師合作的人。九站走完，你會知道一個網站從你按下按鈕到畫面出現，中間經過了哪些地方，以及每個地方可能出什麼事。第一次來，建議從<a href={url("/chapters/frontend-backend/")}>第 3 站「前端與後端」</a>開始。
+          </p>
+        </li>
+        {
+          plannedLines.map((line) => (
+            <li style={`--c: ${line.color}`} class="planned">
+              <h3>{line.name}（規劃中）</h3>
+              <p>
+                {line.forWhom}。預計會有：{line.stations.join('、')}。
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  .hero {
+    padding: 3.5rem 0 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    font-weight: 900;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+  .lede {
+    max-width: 38em;
+    margin: 1.4rem 0 0;
+    font-size: 1.1rem;
+    color: var(--muted);
+  }
+  .map-section {
+    margin: 1rem 0 0;
+    padding: 1.5rem 0 0.5rem;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.2rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin: 0.5rem 0 0;
+  }
+  .legend-dot {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--line-base);
+    background: var(--surface);
+    margin-right: 0.35rem;
+    vertical-align: -2px;
+  }
+  .legend-dot.filled {
+    background: var(--line-base);
+  }
+  .legend-dash {
+    display: inline-block;
+    width: 28px;
+    border-top: 4px dotted var(--muted);
+    margin-right: 0.35rem;
+    vertical-align: middle;
+  }
+  @media (max-width: 720px) {
+    .legend-planned {
+      display: none;
+    }
+  }
+  .routes {
+    margin-top: 3.5rem;
+  }
+  .routes h2 {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 1.2rem;
+  }
+  .routes ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.6rem;
+    max-width: var(--measure);
+  }
+  .routes li {
+    border-left: 8px solid var(--c);
+    padding: 0.1rem 0 0.1rem 1.2rem;
+  }
+  .routes li.planned {
+    border-left-style: dotted;
+  }
+  .routes h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .routes p {
+    margin: 0.3rem 0 0;
+    color: var(--muted);
+  }
+  .routes a {
+    color: var(--ink);
+    font-weight: 700;
+  }
+</style>

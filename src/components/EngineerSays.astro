@@ -1,0 +1,43 @@
+---
+interface Item {
+  said: string;
+  means: string;
+}
+interface Props {
+  items: Item[];
+}
+const { items } = Astro.props;
+---
+
+<dl class="says">
+  {
+    items.map((it) => (
+      <div class="pair">
+        <dt>「{it.said}」</dt>
+        <dd>{it.means}</dd>
+      </div>
+    ))
+  }
+</dl>
+
+<style>
+  .says {
+    margin: 1.2rem 0;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .pair {
+    display: grid;
+    gap: 0.25rem;
+  }
+  dt {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  dd {
+    margin: 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--rule);
+    color: var(--muted);
+  }
+</style>

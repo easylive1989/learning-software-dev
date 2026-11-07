@@ -1,0 +1,283 @@
+.cs-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+.cs-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  border: 1.5px solid var(--rule);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 999px;
+  padding: 0.25em 0.9em;
+  font-size: 0.92rem;
+}
+.cs-tab:hover {
+  border-color: var(--ink);
+}
+.cs-tab.on {
+  border-color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
+  font-weight: 700;
+}
+.cs-tab-kind {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.cs-tab-problem .cs-tab-kind {
+  color: var(--alert);
+}
+.cs-tab-solution .cs-tab-kind {
+  color: var(--ok);
+}
+.cs-tab-normal .cs-tab-kind {
+  color: var(--muted);
+}
+
+.cs-stage {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-sans);
+}
+.cs-label {
+  font-size: 17px;
+  font-weight: 900;
+  fill: var(--ink);
+}
+.cs-small {
+  font-size: 12px;
+  fill: var(--muted);
+}
+.cs-user circle,
+.cs-user path {
+  fill: var(--rule);
+}
+.cs-box {
+  fill: color-mix(in srgb, var(--line-front) 5%, var(--surface));
+  stroke: var(--line-front);
+  stroke-width: 2;
+}
+
+.cs-slot-bg {
+  fill: var(--surface);
+  stroke: var(--rule);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  transition: fill 0.25s, stroke 0.25s;
+}
+.cs-slot.cached .cs-slot-bg {
+  fill: color-mix(in srgb, var(--ok) 14%, var(--surface));
+  stroke: var(--ok);
+  stroke-dasharray: none;
+}
+.cs-slot.empty.pending .cs-slot-bg {
+  stroke: var(--warn);
+  stroke-dasharray: none;
+}
+.cs-slot.hot .cs-slot-bg {
+  stroke-width: 3;
+}
+.cs-slot-name {
+  font-size: 12px;
+  fill: var(--ink);
+}
+.cs-slot.empty .cs-slot-name {
+  fill: var(--muted);
+}
+.cs-slot.hot .cs-slot-name {
+  font-weight: 900;
+}
+.cs-ttl-track {
+  fill: var(--rule);
+}
+.cs-ttl {
+  fill: var(--ok);
+}
+
+.cs-guard rect {
+  fill: var(--ink);
+}
+
+.cs-db-body,
+.cs-db-top {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 2;
+  transition: fill 0.3s, stroke 0.3s;
+}
+.cs-db-top {
+  fill: color-mix(in srgb, var(--ink) 8%, var(--surface));
+}
+.cs-db-status {
+  font-size: 14px;
+  font-weight: 700;
+  fill: var(--muted);
+}
+.cs-db.stressed .cs-db-body,
+.cs-db.stressed .cs-db-top {
+  stroke: var(--warn);
+  fill: color-mix(in srgb, var(--warn) 12%, var(--surface));
+}
+.cs-db.stressed .cs-db-status {
+  fill: var(--warn);
+}
+.cs-db.stressed {
+  animation: cs-shake 0.18s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.cs-db.down .cs-db-body,
+.cs-db.down .cs-db-top {
+  stroke: var(--alert);
+  fill: color-mix(in srgb, var(--alert) 18%, var(--surface));
+}
+.cs-db.down .cs-db-status {
+  fill: var(--alert);
+  font-size: 17px;
+}
+@keyframes cs-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.cs-meter {
+  fill: var(--ok);
+}
+.cs-meter.over {
+  fill: var(--alert);
+}
+.cs-meter-cap {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.cs-dot {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+}
+.cs-dot-pending {
+  fill: var(--line-front);
+}
+.cs-dot-hit {
+  fill: var(--ok);
+}
+.cs-dot-db {
+  fill: var(--warn);
+}
+.cs-dot-fail {
+  fill: var(--alert);
+}
+.cs-dot-blocked {
+  fill: var(--planned);
+}
+.cs-dot.fake {
+  stroke: var(--alert);
+  stroke-width: 2.5;
+}
+
+.cs-caption {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  min-height: 4.6em;
+  margin-top: 0.4rem;
+  padding: 0.7rem 0.2rem 0.2rem;
+  border-top: 1px solid var(--rule);
+}
+.cs-caption p {
+  margin: 0;
+  font-size: 1rem;
+  animation: cs-fade 0.4s ease;
+}
+.cs-kind {
+  flex: none;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.1em 0.6em;
+  border-radius: 999px;
+  margin-top: 0.2em;
+  color: #fff;
+  background: var(--muted);
+}
+.cs-kind-problem {
+  background: var(--alert);
+}
+.cs-kind-solution {
+  background: var(--ok);
+}
+@keyframes cs-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.cs-controls {
+  margin-top: 0.6rem;
+}
+.cs-timeline {
+  flex: 1 1 120px;
+  height: 4px;
+  background: var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-left: 0.4rem;
+}
+.cs-timeline span {
+  display: block;
+  height: 100%;
+  background: var(--ink);
+}
+
+.cs-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+.cs-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.cs-key {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.cs-key.cs-dot-pending {
+  background: var(--line-front);
+}
+.cs-key.cs-dot-hit {
+  background: var(--ok);
+}
+.cs-key.cs-dot-db {
+  background: var(--warn);
+}
+.cs-key.cs-dot-fail {
+  background: var(--alert);
+}
+.cs-key.cs-dot-blocked {
+  background: var(--planned);
+}
+.cs-key.fake {
+  box-shadow: 0 0 0 2px var(--alert);
+}

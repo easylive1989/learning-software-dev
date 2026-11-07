@@ -1,0 +1,58 @@
+---
+interface Props {
+  title: string;
+  forWhom?: string;
+}
+const { title, forWhom } = Astro.props;
+---
+
+<details class="deeper">
+  <summary>
+    <span class="title">{title}</span>
+    {forWhom && <span class="for">{forWhom}</span>}
+  </summary>
+  <div class="body">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .deeper {
+    margin: 1rem 0;
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  summary {
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.8rem;
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '+';
+    font-family: var(--font-mono);
+    font-weight: 600;
+    width: 1ch;
+  }
+  .deeper[open] summary::before {
+    content: '−';
+  }
+  .title {
+    font-weight: 700;
+  }
+  .for {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .body {
+    padding: 0 1.2rem 0.6rem 2.3rem;
+    border-top: 1px solid var(--rule);
+  }
+</style>

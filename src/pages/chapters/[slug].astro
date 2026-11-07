@@ -1,0 +1,31 @@
+---
+import ChapterLayout from '../../layouts/ChapterLayout.astro';
+import { baseLine } from '../../data/chapters';
+import { url } from '../../data/paths';
+
+export function getStaticPaths() {
+  return baseLine.filter((ch) => !ch.ready).map((ch) => ({ params: { slug: ch.slug }, props: { chapter: ch } }));
+}
+
+const { chapter } = Astro.props;
+---
+
+<ChapterLayout slug={chapter.slug}>
+  <div class="construction">
+    <h2>這一站還在施工</h2>
+    <p>完成後，這一章會帶你看懂：</p>
+    <ul>
+      {chapter.covers.map((c) => <li>{c}</li>)}
+    </ul>
+    <p>
+      目前可以先去 <a href={url("/chapters/frontend-backend/")}>前端與後端</a> 或
+      <a href={url("/chapters/cache/")}>快取與雪崩</a> 看看。
+    </p>
+  </div>
+</ChapterLayout>
+
+<style>
+  .construction h2 {
+    border-top-style: dashed;
+  }
+</style>
