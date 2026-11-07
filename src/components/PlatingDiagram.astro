@@ -1,0 +1,51 @@
+---
+import './ch3.css';
+
+const ingredients = `<svg viewBox="0 0 72 48" aria-hidden="true"><circle cx="18" cy="30" r="9" class="fill-back"/><circle cx="38" cy="22" r="7" class="fill-front"/><rect x="48" y="26" width="14" height="14" rx="2" class="fill-muted"/></svg>`;
+const plated = `<svg viewBox="0 0 72 48" aria-hidden="true"><ellipse cx="36" cy="38" rx="30" ry="7" class="fill-muted"/><circle cx="26" cy="30" r="7" class="fill-back"/><circle cx="40" cy="27" r="6" class="fill-front"/><rect x="44" y="28" width="10" height="9" rx="2" class="fill-ink"/></svg>`;
+const kitchen = `<svg viewBox="0 0 72 48" aria-hidden="true"><rect x="8" y="28" width="56" height="16" rx="3" class="fill-ink"/><rect x="16" y="6" width="26" height="13" rx="3" class="fill-muted"/><rect x="42" y="9" width="10" height="3" rx="1" class="fill-muted"/><path d="M22 28 q3 -5 0 -8 q6 3 4 8 z M32 28 q3 -6 0 -9 q6 4 4 9 z" class="fill-alert"/></svg>`;
+---
+
+<div class="pd">
+  <div class="pd-row">
+    <h4>CSR：廚房只出食材，外場自己擺盤</h4>
+    <div class="pd-flow">
+      <div class="pd-box">
+        <Fragment set:html={kitchen} />
+        <strong>廚房</strong>
+        伺服器回傳資料
+      </div>
+      <div class="pd-arrow">
+        送出去的是食材（JSON）
+        <code>{'{ "item": "珍珠奶茶" }'}</code>
+      </div>
+      <div class="pd-box busy">
+        <Fragment set:html={ingredients} />
+        <strong>外場</strong>
+        瀏覽器跑 JavaScript，把資料畫成畫面
+      </div>
+    </div>
+    <p class="pd-note">第一次打開要先等程式下載完才看得到東西，之後切換頁面很快。</p>
+  </div>
+
+  <div class="pd-row">
+    <h4>SSR：廚房連盤子都擺好才端出去</h4>
+    <div class="pd-flow">
+      <div class="pd-box busy">
+        <Fragment set:html={kitchen} />
+        <strong>廚房</strong>
+        伺服器直接產生 HTML
+      </div>
+      <div class="pd-arrow">
+        送出去的是擺好的盤（HTML）
+        <code>{'<li>珍珠奶茶</li>'}</code>
+      </div>
+      <div class="pd-box">
+        <Fragment set:html={plated} />
+        <strong>外場</strong>
+        瀏覽器收到就能直接顯示
+      </div>
+    </div>
+    <p class="pd-note">第一次打開比較快，搜尋引擎也讀得到內容；代價是每個請求伺服器都要多做事。</p>
+  </div>
+</div>

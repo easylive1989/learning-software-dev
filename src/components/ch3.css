@@ -1,0 +1,694 @@
+/* 第 3 章的插圖與動畫元件共用樣式 */
+
+/* SVG 小插圖的填色 */
+.fill-ink { fill: var(--ink); }
+.fill-muted { fill: var(--planned); }
+.fill-bg { fill: var(--surface); }
+.fill-front { fill: var(--line-front); }
+.fill-back { fill: var(--line-back); }
+.fill-alert { fill: var(--alert); }
+.stroke-ink { stroke: var(--ink); stroke-width: 2.5; fill: none; }
+.stroke-back { stroke: var(--line-back); stroke-width: 2; fill: none; }
+
+/* ---------- 餐廳剖面圖 ---------- */
+.rm-floor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.2rem minmax(0, 2fr);
+  align-items: stretch;
+}
+.rm-area {
+  position: relative;
+  border-radius: var(--radius-sm);
+  padding: 1.7rem 0.6rem 0.6rem;
+  display: flex;
+}
+.rm-front {
+  border: 1.5px solid var(--line-front);
+  background: color-mix(in srgb, var(--line-front) 6%, var(--surface));
+}
+.rm-back {
+  border: 1.5px dashed var(--muted);
+  background: color-mix(in srgb, var(--ink) 4%, var(--surface));
+}
+.rm-area-label {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.7rem;
+  right: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.rm-front .rm-area-label {
+  color: var(--line-front);
+}
+.rm-back-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.2rem minmax(0, 1fr);
+  width: 100%;
+}
+.rm-zone {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0.5rem 0.4rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.rm-zone:hover {
+  border-color: var(--rule);
+}
+.rm-zone.on {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 0 var(--ink);
+}
+.rm-art {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+.rm-screen {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.rm-flame {
+  fill: var(--alert);
+  transform-origin: 45px 44px;
+  animation: rm-flicker 0.9s ease-in-out infinite alternate;
+}
+@keyframes rm-flicker {
+  from { transform: scaleY(0.85); opacity: 0.8; }
+  to { transform: scaleY(1.1); opacity: 1; }
+}
+.rm-zone-place {
+  font-weight: 900;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+.rm-zone-role {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+/* 區域之間的連線 */
+.rm-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rm-link-line {
+  position: absolute;
+  left: 0.2rem;
+  right: 0.2rem;
+  top: 50%;
+  border-top: 3px dotted var(--rule);
+}
+.rm-link.on .rm-link-line {
+  border-top-style: solid;
+  border-color: var(--line-front);
+}
+.rm-link-label {
+  position: relative;
+  white-space: pre-line;
+  font-size: 0.72rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--muted);
+  background: var(--surface);
+  padding: 0.1rem 0.15rem;
+  border-radius: 3px;
+}
+.rm-back .rm-link-label {
+  background: color-mix(in srgb, var(--ink) 4%, var(--surface));
+}
+.rm-link.on .rm-link-label {
+  color: var(--line-front);
+  font-weight: 700;
+}
+
+.rm-controls {
+  margin-top: 1rem;
+}
+.rm-hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.rm-detail {
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.8rem;
+  min-height: 9.5rem;
+}
+.rm-detail-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.rm-seen {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0 0.5em;
+  border-radius: 4px;
+}
+.rm-seen.yes {
+  color: var(--line-front);
+  background: color-mix(in srgb, var(--line-front) 12%, transparent);
+}
+.rm-seen.no {
+  color: var(--muted);
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.rm-facts {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 0.25rem 0.8rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+}
+.rm-facts dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding-top: 0.1rem;
+}
+.rm-facts dd {
+  margin: 0;
+}
+.rm-tour {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 500;
+}
+.rm-tour-where {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--surface);
+  background: var(--ink);
+  border-radius: 4px;
+  padding: 0 0.5em;
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  /* 直式：外場在上、廚房在中、倉庫在下 */
+  .rm-floor,
+  .rm-back-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rm-link {
+    min-height: 3rem;
+  }
+  .rm-link-line {
+    left: 50%;
+    right: auto;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    border-top: 0;
+    border-left: 3px dotted var(--rule);
+  }
+  .rm-link.on .rm-link-line {
+    border-left-style: solid;
+    border-color: var(--line-front);
+  }
+  .rm-zone {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    column-gap: 0.7rem;
+    text-align: left;
+  }
+  .rm-art {
+    width: 96px;
+  }
+  .rm-zone-place {
+    font-size: 1.1rem;
+  }
+  .rm-facts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .rm-facts dd {
+    margin-bottom: 0.45rem;
+  }
+}
+
+/* ---------- 點菜單就是 API ---------- */
+.ot-stage {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr) 7.5rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0 1rem;
+}
+.ot-end {
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  text-align: center;
+  line-height: 1.35;
+  transition: border-color 0.2s;
+}
+.ot-end.on {
+  border-color: var(--ink);
+  box-shadow: inset 0 3px 0 var(--ink);
+}
+.ot-end-name {
+  display: block;
+  font-weight: 900;
+}
+.ot-end-sub {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.ot-track {
+  position: relative;
+  height: 52px;
+}
+.ot-track::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 3px dotted var(--rule);
+}
+.ot-token {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--p) * (100% - 44px));
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  transition: left 1.1s cubic-bezier(0.6, 0, 0.3, 1), top 1.1s cubic-bezier(0.6, 0, 0.3, 1);
+}
+.ot-token svg {
+  width: 100%;
+  height: 100%;
+}
+.ot-panels {
+  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.ot-panel {
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.7rem;
+  opacity: 0.45;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+.ot-panel.on {
+  opacity: 1;
+  border-color: var(--ink);
+}
+.ot-panel h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+}
+.ot-panel h4 small {
+  font-weight: 400;
+  color: var(--muted);
+  margin-left: 0.4rem;
+}
+.ot-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.ot-lines li {
+  display: grid;
+  gap: 0.05rem;
+  padding: 0.2rem 0.4rem;
+  border-left: 3px solid transparent;
+  border-radius: 2px;
+  transition: background 0.3s, border-color 0.3s;
+}
+.ot-lines li.hl {
+  border-left-color: var(--line-front);
+  background: color-mix(in srgb, var(--line-front) 10%, transparent);
+}
+.ot-lines code {
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ot-lines span {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.ot-caption {
+  margin: 0 0 0.9rem;
+  min-height: 3.4em;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  /* 直式：外場在上、廚房在下，點菜單上下移動 */
+  .ot-stage {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+  .ot-end {
+    width: 100%;
+  }
+  .ot-track {
+    width: 52px;
+    height: 110px;
+  }
+  .ot-track::before {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    border-top: 0;
+    border-left: 3px dotted var(--rule);
+  }
+  .ot-token {
+    left: 50%;
+    margin-left: -22px;
+    margin-top: 0;
+    top: calc(var(--p) * (100% - 44px));
+  }
+  .ot-panels {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- 客人改了點菜單 ---------- */
+.fo-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+.fo-phone {
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  padding: 0.9rem 0.9rem 1rem;
+  max-width: 280px;
+  width: 100%;
+  justify-self: center;
+  align-self: start;
+}
+.fo-phone-bar {
+  width: 3rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--rule);
+  margin: 0 auto 0.7rem;
+}
+.fo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-weight: 700;
+}
+.fo-item small {
+  font-weight: 400;
+  color: var(--muted);
+}
+.fo-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.6rem 0;
+}
+.fo-stepper button {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.fo-stepper button:disabled {
+  opacity: 0.35;
+}
+.fo-qty {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.2rem;
+  min-width: 3ch;
+  text-align: center;
+}
+.fo-qty.forged {
+  color: var(--alert);
+}
+.fo-limit {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 0.6rem;
+}
+.fo-send {
+  width: 100%;
+}
+.fo-side {
+  display: grid;
+  gap: 0.8rem;
+  align-content: start;
+}
+.fo-side-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.fo-devtools {
+  border: 1.5px dashed var(--alert);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+}
+.fo-devtools pre {
+  margin: 0.3rem 0 0.4rem;
+  font-size: 0.78rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.fo-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.fo-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.2rem 0 0;
+}
+.fo-node {
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.6rem;
+  min-height: 7.5rem;
+  transition: border-color 0.2s;
+}
+.fo-node.on {
+  border-color: var(--ink);
+  box-shadow: inset 0 3px 0 var(--ink);
+}
+.fo-node.bad {
+  border-color: var(--alert);
+  box-shadow: inset 0 3px 0 var(--alert);
+}
+.fo-node.good {
+  border-color: var(--ok);
+  box-shadow: inset 0 3px 0 var(--ok);
+}
+.fo-node-name {
+  font-weight: 900;
+  line-height: 1.3;
+}
+.fo-node-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.fo-note {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.fo-note code,
+.fo-note pre {
+  font-size: 0.78rem;
+}
+.fo-note pre {
+  margin: 0.2rem 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.fo-note.bad {
+  color: var(--alert);
+  font-weight: 700;
+}
+.fo-note.good {
+  color: var(--ok);
+  font-weight: 700;
+}
+.fo-ledger {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+}
+.fo-ledger li {
+  border-top: 1px solid var(--rule);
+  padding: 0.15rem 0;
+}
+.fo-ledger li.bad {
+  color: var(--alert);
+  font-weight: 700;
+}
+.fo-verdict {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--ok) 10%, var(--surface));
+}
+.fo-verdict.bad {
+  background: color-mix(in srgb, var(--alert) 10%, var(--surface));
+}
+
+@media (max-width: 600px) {
+  .fo-top,
+  .fo-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fo-node {
+    min-height: 0;
+  }
+  /* 手機上先選情境，再按手機上的送出 */
+  .fo-side {
+    order: -1;
+  }
+}
+
+/* ---------- SSR / CSR 擺盤圖 ---------- */
+.pd {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+.pd-row {
+  border: 1.5px solid var(--rule);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.8rem;
+}
+.pd-row h4 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+.pd-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.4rem;
+}
+.pd-box {
+  text-align: center;
+  line-height: 1.35;
+  font-size: 0.85rem;
+}
+.pd-box svg {
+  width: 72px;
+  height: 48px;
+  display: block;
+  margin: 0 auto 0.2rem;
+}
+.pd-box strong {
+  display: block;
+  font-size: 0.95rem;
+}
+.pd-box.busy strong::after {
+  content: '・比較忙';
+  color: var(--warn);
+  font-size: 0.78rem;
+}
+.pd-arrow {
+  position: relative;
+  text-align: center;
+  font-size: 0.78rem;
+  padding: 0.2rem 0 0.6rem;
+}
+.pd-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 8px;
+  bottom: 0.2rem;
+  border-top: 2px solid var(--ink);
+}
+.pd-arrow::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: calc(0.2rem - 5px);
+  border: 6px solid transparent;
+  border-left: 9px solid var(--ink);
+  border-right: 0;
+}
+.pd-arrow code {
+  display: block;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.pd-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+@media (max-width: 600px) {
+  .pd-flow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pd-arrow {
+    padding: 0.2rem 0 0.2rem 1.4rem;
+    text-align: left;
+    margin-left: 28%;
+  }
+  .pd-arrow::after {
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 6px;
+    border-top: 0;
+    border-left: 2px solid var(--ink);
+  }
+  .pd-arrow::before {
+    left: -5px;
+    right: auto;
+    bottom: -3px;
+    border: 6px solid transparent;
+    border-top: 9px solid var(--ink);
+    border-bottom: 0;
+  }
+}
+
+.c3-progress {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-left: 0.3rem;
+}

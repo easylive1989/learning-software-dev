@@ -4,6 +4,10 @@ slug: frontend-backend
 ---
 
 import RequestJourney from '../../components/RequestJourney.tsx';
+import RestaurantMap from '../../components/RestaurantMap.tsx';
+import OrderTicket from '../../components/OrderTicket.tsx';
+import ForgedOrder from '../../components/ForgedOrder.tsx';
+import PlatingDiagram from '../../components/PlatingDiagram.astro';
 import Quiz from '../../components/Quiz.tsx';
 import EngineerSays from '../../components/EngineerSays.astro';
 import Deeper from '../../components/Deeper.astro';
@@ -12,13 +16,17 @@ import Deeper from '../../components/Deeper.astro';
 
 你走進一間餐廳。你看得到桌椅、菜單、服務生；你看不到廚房裡的爐火，也看不到後面倉庫裡堆了多少食材。可是你點的每一道菜，都要經過這三個地方才會出現在你面前。
 
-一個網站或 App 也是這樣分工的：
+一個網站或 App 也是這樣分工的：**前端是外場，後端是廚房，資料庫是倉庫。** 點下面任何一區，看它在軟體裡是誰；或按「看一道菜怎麼來」，跟著一張訂單走一圈。
 
-- **前端是外場。** 你在螢幕上看到、點得到的一切：按鈕、表單、清單、動畫。前端的程式碼會被下載到**你的**手機或電腦，在你的瀏覽器裡執行。
-- **後端是廚房。** 它在公司的伺服器上執行，你看不到。它負責「做決定」：你有沒有登入、你能不能看這筆資料、訂單金額怎麼算。
-- **資料庫是倉庫。** 所有需要長期保存的東西都在這裡：會員、訂單、商品。後端需要資料時會來這裡拿，也會把新資料存回來。
+<RestaurantMap client:visible />
 
-外場和廚房之間靠點菜單溝通。在軟體裡，這張點菜單叫做 **API**：前端和後端事先約好「你要什麼就這樣寫，我會這樣回給你」。
+注意那條虛線框：廚房和倉庫都在公司的伺服器上，你永遠看不到。你看得到的只有外場，而外場的程式碼其實是被下載到**你的**手機或電腦上執行的。
+
+## 點菜單就是 API
+
+外場和廚房之間靠點菜單溝通。在軟體裡，這張點菜單叫做 **API**：前端和後端事先約好「你要什麼就這樣寫，我會這樣回給你」。送出去的單子叫 request，端回來的菜叫 response。
+
+<OrderTicket client:visible />
 
 ## 動手試試：一次點擊背後發生了什麼
 
@@ -35,7 +43,11 @@ import Deeper from '../../components/Deeper.astro';
 
 因為前端的程式跑在使用者的裝置上，**使用者其實可以改它**。懂一點技術的人可以打開瀏覽器的開發者工具，把「數量最多 5 杯」的限制拿掉，或是直接繞過按鈕送出自己編的請求。
 
-這就像客人可以在點菜單上亂寫。所以真正的把關一定要在廚房：前端可以先擋一次讓使用者體驗好一點，**後端一定要再檢查一次**。這也是為什麼你會聽到工程師說「前端有擋，但後端也要驗」。
+這就像客人可以在點菜單上亂寫。下面這支手機的 + 按鈕最多只能按到 5 杯，先正常點一次，再打開開發者工具把數量改掉，比較「只靠前端擋」和「後端也檢查」的差別。
+
+<ForgedOrder client:visible />
+
+所以真正的把關一定要在廚房：前端可以先擋一次讓使用者體驗好一點，**後端一定要再檢查一次**。這也是為什麼你會聽到工程師說「前端有擋，但後端也要驗」。
 
 ## 工程師會這樣說
 
@@ -77,6 +89,8 @@ import Deeper from '../../components/Deeper.astro';
 前面的餐廳比喻是「廚房只出菜（JSON），擺盤在外場（瀏覽器）完成」。這叫 **CSR（Client-Side Rendering）**，React、Vue 寫的單頁應用大多是這樣。
 
 另一種做法是廚房連盤子都擺好才端出去：伺服器直接產生完整的 HTML。這叫 **SSR（Server-Side Rendering）**。好處是第一次打開比較快、搜尋引擎比較好讀；代價是伺服器要做更多事。
+
+<PlatingDiagram />
 
 現在的框架（Next.js、Nuxt、Astro）常常混用：第一次載入用 SSR，之後的互動交給瀏覽器。所以當前端工程師說「這頁要改成 SSR」，意思是「這頁的擺盤要搬回廚房做」，後端的負擔和快取策略都會跟著改變。
 
