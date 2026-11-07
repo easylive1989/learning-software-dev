@@ -7,8 +7,8 @@ interface Props {
   description?: string;
 }
 
-const { title, description = '用比喻和互動模擬，聽懂軟體工程師在說什麼。' } = Astro.props;
-const fullTitle = title === '聽懂工程師' ? title : `${title}｜聽懂工程師`;
+const { title, description = '用生活比喻和互動模擬學習軟體工程：會出什麼問題，工程師又怎麼解決。' } = Astro.props;
+const fullTitle = title === '認識軟體工程' ? title : `${title}｜認識軟體工程`;
 ---
 
 <html lang="zh-Hant-TW">
@@ -31,7 +31,7 @@ const fullTitle = title === '聽懂工程師' ? title : `${title}｜聽懂工程
         <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
           <circle cx="11" cy="11" r="8" fill="var(--surface)" stroke="var(--line-base)" stroke-width="4"></circle>
         </svg>
-        聽懂工程師
+        認識軟體工程
       </a>
       <a href={url("/#map")} class="header-link">路線圖</a>
     </header>
